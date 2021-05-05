@@ -87,7 +87,7 @@ const ProfileEditPage = ({ match }) => {
             history.push(`/employeeProfile/${id}`);
           }
         })
-        .catch((error) => setError(error.response.data));
+        .catch((error) => setError(error.response.data.Error));
     } else {
       const updates = { name: companyName, email, location, website, about, logo, techs: techList };
       updateCompany(id, updates)
@@ -96,7 +96,7 @@ const ProfileEditPage = ({ match }) => {
             history.push(`/companyProfile/${id}`);
           }
         })
-        .catch((error) => setError(error.response.data));
+        .catch((error) => setError(error.response.data.Error));
     }
   };
 
@@ -113,13 +113,16 @@ const ProfileEditPage = ({ match }) => {
     const techs = options.map((opt) => opt.value);
     setTechList(techs);
   };
-  console.log(error);
+
   return (
     user && (
       <div className="profile-edit">
         <h3 className="profile-edit__heading">UPDATE YOUR PROFILE</h3>
         {type === 'talent' && (
           <form className="profile-edit__form">
+            <p className={error ? 'profile-edit__error ' : 'profile-edit__error--hidden'}>
+              {error}
+            </p>
             <Input
               type="text"
               placeholder="First Name"
@@ -230,6 +233,9 @@ const ProfileEditPage = ({ match }) => {
         )}
         {type === 'company' && (
           <form className="profile-edit__form">
+            <p className={error ? 'profile-edit__error ' : 'profile-edit__error--hidden'}>
+              {error}
+            </p>
             <Input
               type="text"
               placeholder="Company Name"
