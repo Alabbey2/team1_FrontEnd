@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 
@@ -11,20 +11,37 @@ import ImageUpload from '../../Components/ImageUpload';
 import { typeOptions, techOptions } from '../../Utils/selectOptions';
 
 import './ProfileSetupPage.scss';
-import { editCompany, editTalent } from '../../services/userService';
+import { editCompany, editTalent, getOneCompany, getOneTalent } from '../../services/userService';
 
 const ProfileSetupPage = ({ match }) => {
   const history = useHistory();
   const type = match.params.type;
   const id = match.params.id;
+  const [user, setUser] = useState('');
 
-  console.log('id--', id);
+  useEffect(() => {
+    if (type === 'talent') {
+      getOneTalent(id).then((response) => {
+        if (response.data) {
+          setUser(response.data);
+        }
+      });
+    } else {
+      getOneCompany(id).then((response) => {
+        if (response.data) {
+          setUser(response.data);
+        }
+      });
+    }
+  }, []);
+
+  console.log('test--', user);
 
   const [photo, setPhoto] = useState(
-    'https://www.clipartkey.com/mpngs/m/236-2364608_medal-clipart-lace-blue-leaf-round-logo.png'
+    'https://www.restova.co.tz/sites/default/files/pictures/default.jpg'
   );
   const [logo, setLogo] = useState(
-    'https://muropaketti.com/wp-content/uploads/2017/11/apple-logo-black.png'
+    'https://www.iammadein.com/sites/iammadein.com/files/default_images/default-logo.png'
   );
   const [level, setLevel] = useState('');
   const [typeList, setTypeList] = useState([]);
@@ -73,7 +90,7 @@ const ProfileSetupPage = ({ match }) => {
     editTalent(updates, id)
       .then((response) => {
         if (response.data) {
-          history.push('/home');
+          history.push('/');
         }
       })
       .catch((error) => {
@@ -87,13 +104,14 @@ const ProfileSetupPage = ({ match }) => {
       location,
       about,
       website,
+      techs: techList,
       logo
     };
 
     editCompany(updates, id)
       .then((response) => {
         if (response.data) {
-          history.push('/home');
+          history.push('/');
         }
       })
       .catch((error) => {
@@ -103,17 +121,17 @@ const ProfileSetupPage = ({ match }) => {
 
   return (
     <div className="profile-setup">
-      <h3 className="profile-setup__heading">SETUP YOUR PROFILE</h3>
+      <h3 className="profile-setup__heading">SET UP YOUR PROFILE</h3>
 
       {type === 'talent' && (
         <div className="profile-setup__content">
           <div className="profile-setup__data">
             <img className=" profile-setup__image" src={photo} />
             <div className="profile-setup__info-div">
-              <p className="profile-setup__text profile-setup__text--big">Chiranjibi Chapagain</p>
-              <p className="profile-setup__text profile-setup__text--small">
-                chiranjibichapagain@gmail.com
+              <p className="profile-setup__text profile-setup__text--big">
+                {user && user.firstName} {user && user.lastName}
               </p>
+              <p className="profile-setup__text profile-setup__text--small">{user && user.email}</p>
               <p className="profile-setup__text">Update Profile Picture</p>
               <div className="profile-setup__text">
                 <ImageUpload setImage={setPhoto} />
@@ -127,6 +145,7 @@ const ProfileSetupPage = ({ match }) => {
               id="phone"
               value={phone}
               handleInputChange={setFields}
+              label="Phone"
             />
             <Input
               type="text"
@@ -134,14 +153,15 @@ const ProfileSetupPage = ({ match }) => {
               id="location"
               value={location}
               handleInputChange={setFields}
+              label="Location"
             />
-
             <Input
               type="text"
               placeholder="Title, e.g, Full-Stack developer"
               id="title"
               value={title}
               handleInputChange={setFields}
+              label="Title"
             />
             <Input
               type="text"
@@ -149,14 +169,15 @@ const ProfileSetupPage = ({ match }) => {
               id="github"
               value={github}
               handleInputChange={setFields}
+              label="Github Link"
             />
-
             <Input
               type="text"
               placeholder="Your LinkedIn link"
               id="linkedin"
               value={linkedin}
               handleInputChange={setFields}
+              label="LinkedIn Link"
             />
             <Textarea
               maxLength={300}
@@ -164,13 +185,16 @@ const ProfileSetupPage = ({ match }) => {
               id="about"
               value={about}
               handleInputChange={setFields}
+              label="About"
             />
             <InputSelect
               handleInputChange={(e) => setLevel(e.target.value)}
               placeholder="Select seniority"
               options={['Junior', 'Mid-Senior', 'Senior', 'Internship']}
+              id={id}
+              label={'Level'}
             />
-
+            <p className="profile-setup__label">Job-type</p>
             <Select
               placeholder="select job-type"
               onChange={handleChangeType}
@@ -179,6 +203,7 @@ const ProfileSetupPage = ({ match }) => {
               name="type"
               options={typeOptions}
             />
+            <p className="profile-setup__label">Techs</p>
             <Select
               placeholder="select techs"
               onChange={handleChangeTech}
@@ -199,12 +224,8 @@ const ProfileSetupPage = ({ match }) => {
           <div className="profile-setup__data">
             <img className=" profile-setup__image" src={logo} />
             <div className="profile-setup__info-div">
-              <p className="profile-setup__text profile-setup__text--big">
-                Business College Helsinki
-              </p>
-              <p className="profile-setup__text profile-setup__text--small">
-                info@businesscollege.com
-              </p>
+              <p className="profile-setup__text profile-setup__text--big">{user && user.name}</p>
+              <p className="profile-setup__text profile-setup__text--small">{user && user.email}</p>
               <p className="profile-setup__text">Update Profile Picture</p>
               <div className="profile-setup__upload">
                 <ImageUpload setImage={setLogo} />
@@ -218,6 +239,7 @@ const ProfileSetupPage = ({ match }) => {
               id="location"
               value={location}
               handleInputChange={setFields}
+              label="Location"
             />
             <Input
               type="text"
@@ -225,13 +247,25 @@ const ProfileSetupPage = ({ match }) => {
               id="website"
               value={website}
               handleInputChange={setFields}
+              label="Company Website"
             />
+            <p className="profile-setup__label">Techs</p>
+            <Select
+              placeholder="select techs"
+              onChange={handleChangeTech}
+              styles={selectStyles}
+              isMulti
+              name="tech"
+              options={techOptions}
+            />
+
             <Textarea
               maxLength={300}
               placeholder="Company info Max.300 characters"
               id="about"
               value={about}
               handleInputChange={setFields}
+              label="About Company"
             />
             <div className="profile-setup__btn-div">
               <Button modifier="light" text="Update" handleClick={setUpCompany} />

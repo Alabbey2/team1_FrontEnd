@@ -22,7 +22,7 @@
     align-items: center;
   }
 
-  &__job-info {
+  &__talent-info {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -32,7 +32,7 @@
   &__avatar {
     height: 120px;
     width: 120px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 50%;
     background-color: $white;
     margin-right: 20px;
@@ -47,6 +47,7 @@
 
   &__skills {
     width: 100%;
+    height: 40px;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -82,6 +83,8 @@
     }
 
     &--description {
+      width: 100%;
+      text-align: left;
       max-height: 150px;
       overflow-y: auto;
       text-overflow: ellipsis;
@@ -98,12 +101,20 @@
     margin: 0;
   }
 
+  &__icon-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__icons {
     padding: 1.2rem 1rem;
     display: flex;
     border-radius: 0px 0px 6px 6px;
     justify-content: space-around;
     background-color: $white;
+    margin-bottom: 5px;
   }
 
   &__icon {
@@ -118,6 +129,33 @@
   }
 }
 
+.close {
+  font-family: $nunito;
+  color: #c4c4c4;
+  cursor: pointer;
+}
+
+.TC-content {
+  width: 30vw;
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__title {
+    color: #c4c4c4;
+    margin: 20px 0;
+  }
+
+  &__text {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 1em;
+    text-align: center;
+    color: $white;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .talent-card {
     &__main {
@@ -128,6 +166,31 @@
       &--description {
         padding: 0 15px;
       }
+    }
+  }
+  .TC-content {
+    width: 50vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .TC-content {
+    width: 80vw;
+
+    &__text {
+      size: $t-xl;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .TC-content {
+    width: 90vw;
+    &__text {
+      size: 6vw;
+    }
+    &__text-link {
+      size: 6vw;
     }
   }
 }

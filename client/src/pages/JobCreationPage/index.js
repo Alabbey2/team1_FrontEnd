@@ -59,7 +59,6 @@ const JobCreationPage = ({ match }) => {
   return (
     <div className="job-create">
       <h3 className="job-create__heading">ADD A NEW ROLE</h3>
-
       <form className="job-create__form">
         <Input
           type="text"
@@ -67,6 +66,7 @@ const JobCreationPage = ({ match }) => {
           id="title"
           value={title}
           handleInputChange={setFields}
+          label="Job Title"
         />
         <Input
           type="text"
@@ -74,6 +74,7 @@ const JobCreationPage = ({ match }) => {
           id="deadline"
           value={deadline}
           handleInputChange={setFields}
+          label="Deadline"
           handleFocus={(e) => (e.target.type = 'date')}
         />
         <Input
@@ -82,6 +83,7 @@ const JobCreationPage = ({ match }) => {
           id="location"
           value={location}
           handleInputChange={setFields}
+          label="Location"
         />
         <Textarea
           maxLength={300}
@@ -89,17 +91,21 @@ const JobCreationPage = ({ match }) => {
           id="description"
           value={description}
           handleInputChange={setFields}
+          label="Job Description"
         />
         <InputSelect
           handleInputChange={(e) => setLevel(e.target.value)}
           placeholder="Select seniority"
           options={['Junior', 'Mid-Senior', 'Senior', 'Internship']}
+          label="Level"
         />
         <InputSelect
           handleInputChange={(e) => setType(e.target.value)}
           placeholder="Select Job-type"
           options={['Full-time', 'Part-time']}
+          label="Job Type"
         />
+        <p className="job-create__label">Techs</p>
         <Select
           placeholder="select techs"
           onChange={handleChangeTech}
