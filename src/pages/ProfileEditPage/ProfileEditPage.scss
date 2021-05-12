@@ -1,0 +1,118 @@
+@import '../../scss/config';
+@import '../../scss/mixins';
+
+.profile-edit {
+  @include pageBase;
+  margin: 100px auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 200px;
+  background: url('../../Assets/background2.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: contain;
+
+  &__form {
+    padding: 0, 5%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__error {
+    color: #ec4c4c;
+    margin: 0;
+
+    &--hidden {
+      opacity: 0;
+    }
+  }
+
+  &__label {
+    width: 100%;
+    text-align: start;
+    margin: 10px 0 0 0;
+    font-family: $nunito;
+    font-size: $t-small;
+    color: $light;
+  }
+
+  &__heading {
+    color: $white;
+    font-size: $t-medium;
+    font-family: $nunito;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  &__error {
+    margin: 0;
+    color: #be4040;
+  }
+
+  &__error-hidden {
+    margin: 0;
+    opacity: 0;
+  }
+
+  &__profile-wrapper {
+    background-color: rgba(255, 255, 255, 0.534);
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  &__image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: $r-medium;
+    margin: 20px 20px 20px 0px;
+  }
+
+  &__btn-div {
+    width: 100%;
+    margin-top: 30px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .profile-edit {
+    &__form {
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .profile-edit {
+    &__heading {
+      font-size: $t-big;
+    }
+    &__form {
+      width: 100%;
+    }
+
+    &__label {
+      font-size: $t-xl;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .profile-edit {
+    @include pageBaseSmall;
+    margin-top: 100px;
+    &__heading {
+      font-size: 6vw;
+    }
+    &__label {
+      font-size: 4.8vw;
+    }
+  }
+}
